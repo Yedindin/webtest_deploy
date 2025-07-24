@@ -1,4 +1,7 @@
-
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+}
 body {
     font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
     color: #212529;
@@ -160,11 +163,18 @@ h1, h2, h3, h4, h5, h6 {
 
 /* 활성 메뉴에 강조 효과 */
 .nav-link.active {
-    background-color: #17a2b8; /* Bootstrap info 색상 */
+    background-color: #a3a5a29c; /* Bootstrap info 색상 */
     font-weight: bold;
 }
 
 /* 클릭 시 물결 애니메이션 (선택적) */
 .nav-link:active {
     transform: scale(0.98);
+}
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center !important; /* 세로 가운데 정렬 */
+    text-align: center; /* 가운데 정렬 */
+    min-height: 200px; /* 필요 시 높이 조정 */
 }
