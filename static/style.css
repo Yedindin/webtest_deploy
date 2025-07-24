@@ -117,6 +117,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
     color: #fff;
     font-size: 18px;
+    pointer-events: auto;
 }
 .chamber-complete{
     background-color: #000000 ;
@@ -196,4 +197,204 @@ h1, h2, h3, h4, h5, h6 {
 
 .high-load {
     background-color: #dc3545; /* 빨간색 */
+}
+.process-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    margin-top: 20px;
+    gap:15px;
+}
+
+.process-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    margin: 0 5px;
+    width: 5rem;
+}
+
+.process-header {
+    font-weight: bold;
+    height: 40px;           /* 기존보다 낮춤 */
+    padding-top: 5px;       /* 여백 줄이기 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.chamber {
+    padding-top: 1rem;
+    position: relative;
+    width: 60px;
+    height: 60px;
+    background-color: lightslategray;
+    border-radius: 50% / 25%;
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    border: 2px solid #333;
+    border-top: none;  /* <- 겹침 제거 */
+    box-shadow: inset 0 -4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    overflow: visible;
+    cursor: pointer !important;
+}
+
+/* 윗 타원 테두리 추가 */
+.chamber::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #333;
+    background: transparent;
+    box-sizing: border-box;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.chamber.red {
+    background-color:orangered;
+    cursor: pointer;
+}
+@keyframes blink-strong {
+    0%, 100% {
+        background-color: #e74c3c;
+        box-shadow: 0 0 10px 3px rgba(255, 0, 0, 0.6);
+    }
+    50% {
+        background-color: orangered;
+        box-shadow: 0 0 15px 6px rgba(255, 0, 0, 0.9);
+    }
+}
+
+.blinking {
+    animation: blink-strong 1s infinite;
+}
+.arrow {
+    font-size: 24px;
+    margin: 45px 10px 0 10px;
+}
+
+
+.process-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.status-lights {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+
+.chambers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.chamber-cylinder {
+    width: 50px;
+    height: 60px;
+    background: radial-gradient(ellipse at center, #4caf50, #388e3c);
+    border: 2px solid #333;
+    border-radius: 50%/20%;
+    text-align: center;
+    line-height: 60px;
+    color: white;
+    font-weight: bold;
+}
+
+.defect-box {
+    width: 60px;
+    height: 30px;
+    text-align: center;
+    line-height: 24px;
+    font-size: 19px;
+    margin: 0 auto;         /* 가운데 정렬 */
+}
+.v-line {
+    width: 2px;
+    height: 14rem;
+    background-color: #ccc;
+    margin-top: 30px;
+}
+.signal-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    gap: 40px;
+}
+
+.signal-row {
+    display: flex;
+    gap: 12px;
+}
+
+.light {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: gray;
+    transition: all 0.3s ease;
+}
+
+.light.red {
+    background-color: red;
+    box-shadow: 0 0 6px 2px rgba(255, 0, 0, 0.4);
+}
+.light.gray {
+    background-color: dimgray;
+}
+.light.green {
+    background-color: green;
+    box-shadow: 0 0 6px 2px rgba(0, 255, 0, 0.4);
+}
+
+
+.defect-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top : 15px;
+    gap: 50px;
+}
+.btn-transparent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+}
+#custom-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    display: none; /* 초기엔 숨김 */
 }

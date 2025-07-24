@@ -20,58 +20,98 @@
 
             <div class="d-flex justify-content-between flex-wrap">
 
-                <!-- 왼쪽: 공정 흐름 시각화 -->
-                <div class="process-flow d-flex">
-                    {% for process in ['산화공정', '포토공정<br>(SoftBake)', '포토공정<br>(Lithography)', '식각공정', '증착공정'] %}
-                        <div class="stage text-center me-3">
-                            <div class="stage-header fw-bold mb-2">{{ process|safe }}</div>
-                            <div class="chamber-list d-flex flex-column gap-2">
-                                {% for chamber in [1, 2, 3] %}
-                                    <div class="chamber {{ process_status[process][chamber - 1] }}">{{ chamber }}</div>
-                                {% endfor %}
+                <div class="process-container">
+
+                    <!-- 산화공정 -->
+                    <div class="process-column">
+                        <div class="process-header">산화공정</div>
+                        <div class="chamber">1</div>
+
+                        <div class="chamber">2</div>
+
+                        <div class="chamber">3</div>
+                    </div>
+                    <div class="arrow align-self-center me-3 fs-4 text-muted">→</div>
+                    <!-- 포토공정 SoftBake -->
+                    <div class="process-column">
+                        <div class="process-header" id="sb-header">포토공정<br>(SoftBake)</div>
+                        <div class="chamber">1</div>
+
+                        <div class="chamber">2</div>
+
+                        <div class="chamber" >3</div>
+                    </div>
+                    <div class="arrow align-self-center me-3 fs-4 text-muted">→</div>
+                    <!-- 포토공정 Lithography -->
+                    <div class="process-column">
+                        <div class="process-header">포토공정<br>(Lithography)</div>
+                        <div class="chamber">1</div>
+
+                        <div class="chamber">2</div>
+
+                        <div class="chamber red blinking" id="chamber-l-3">3
+                            <button id="btn-edit-l-3" class="btn-transparent"></button>
+                        </div>
+                    </div>
+                    <div class="arrow align-self-center me-3 fs-4 text-muted">→</div>
+
+                    <!-- 식각공정 -->
+                    <div class="process-column">
+                        <div class="process-header" id="etching-header">식각공정</div>
+                        <div class="chamber red blinking" id="chamber-etch-1">1
+                            <button id="btn-edit-etch-1" class="btn-transparent"></button>
+                        </div>
+
+                        <div class="chamber">2</div>
+
+                        <div class="chamber">3</div>
+                    </div>
+                    <div class="arrow align-self-center me-3 fs-4 text-muted">→</div>
+                    <!-- 증착공정 -->
+                    <div class="process-column">
+                        <div class="process-header">증착공정</div>
+                        <div class="chamber">1</div>
+                        <div class="chamber">2</div>
+                        <div class="chamber">3</div>
+                    </div>
+                    <div class="process-column">
+                        <div class="v-line"></div>
+                    </div>
+                    <!-- 신호등 (공정 상태) -->
+                    <!-- 오른쪽 신호등 열 -->
+                    <div class="process-column">
+                        <div class="process-header">공정상태</div>
+
+                        <div class="signal-column">
+                            <!-- 챔버 번호 1 -->
+                            <div class="signal-row" id="signal1">
+                                <div class="light red"></div>
+                                <div class="light gray"></div>
+                            </div>
+                            <!-- 챔버 번호 2 -->
+                            <div class="signal-row" id="signal2">
+                                <div class="light gray"></div>
+                                <div class="light green"></div>
+                            </div>
+                            <!-- 챔버 번호 3 -->
+                            <div class="signal-row" id="signal3">
+                                <div class="light red"></div>
+                                <div class="light gray"></div>
                             </div>
                         </div>
-                        {% if not loop.last %}
-                            <div class="arrow align-self-center me-3 fs-4 text-muted">→</div>
-                        {% endif %}
-                    {% endfor %}
+                    </div>
+                    <div style="margin-left:2rem;"></div>
+                    <div class="process-column">
+                        <div class="process-header">불량가능성</div>
+                        <div class="defect-column">
+                            <div class="defect-box highlight-red" id="rate1">7.82%</div>
+                            <div class="defect-box">3.10%</div>
+                            <div class="defect-box highlight-red" id="rate3">6.56%</div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- 오른쪽: 현재 작업 정보 -->
-                <div class="current-job-info" style="margin-right: 30px;">
-                    <h6 class="fw-bold mb-3">현재 작업 정보</h6>
-                    <table class="table table-sm table-bordered text-center mb-3">
-                        <tbody>
-                        <tr>
-                            <th class="table-secondary">작업 일자</th>
-                            <td>2024-06-30</td>
-                        </tr>
-                        <tr>
-                            <th class="table-secondary">Lot 번호</th>
-                            <td>8</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <h6 class="fw-semibold">공정 스케줄링</h6>
-                    <table class="table table-sm table-bordered text-center">
-                        <thead class="table-light">
-                        <tr>
-                            <th>경로</th>
-                            <th>산화</th>
-                            <th>포토-S</th>
-                            <th>포토-L</th>
-                            <th>식각</th>
-                            <th>증착</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr><td class="table-light">A</td><td>2</td><td>3</td><td>2</td><td>2</td><td>2</td></tr>
-                        <tr><td class="table-light">B</td><td>3</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
-                        <tr><td class="table-light">C</td><td>1</td><td>2</td><td>3</td><td>3</td><td>3</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
+            </div>
             </div>
         </div>
     </div>
@@ -205,6 +245,19 @@
             </div>
         </div>
     </div>
+
+    <div id="custom-toast" class="edit-toast" style="display:none;">
+        <div id="toast-title" style="font-weight:bold; margin-bottom:10px;"></div>
+        <div id="toast-input-area"></div>
+        <div style="text-align:right; margin-top: 20px;">
+            <button onclick="closeToast()">취소</button>
+            <button onclick="applyCustomEdit()">적용</button>
+        </div>
+    </div>
+
+    <div id="toast-msg" style="display:none; position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#333; color:#fff; padding:10px 20px; border-radius:6px;">
+        적용되었습니다.
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -290,6 +343,89 @@
             }
         });
     });
-</script>
+    let currentEditTarget = null;
 
+    // 클릭 이벤트 직접 바인딩 (이벤트 위임 아님)
+    document.getElementById('btn-edit-l-3').addEventListener('click', function (e) {
+        e.stopPropagation();
+        currentEditTarget = 'l-3';
+        document.getElementById('toast-title').innerText = '포토 - Lithography 공정 운전인자 조정';
+        document.getElementById('toast-input-area').innerHTML = `
+        <label>노광 에너지량 :
+          <input type="text" id="energy-input" value="102.932" />
+        </label>
+        <div style="font-size:12px; color:gray; margin-bottom:10px;">
+          {권장값 : 111.702 &lt; Energy Exposure &lt;112.223}
+        </div>
+        <label>빛의 종류 :
+          <select id="light-type">
+            <option value="G">G</option>
+            <option value="I">I</option>
+            <option value="H" selected>H</option>
+          </select>
+        </label>
+        <div style="font-size:12px; color:gray;">
+          {권장 빛 종류 : G,I,H line 순으로 사용 권장}
+        </div>
+    `;
+        document.getElementById('custom-toast').style.display = 'block';
+    });
+
+    document.getElementById('btn-edit-etch-1').addEventListener('click', function (e) {
+        e.stopPropagation();
+        currentEditTarget = 'etch-1';
+        document.getElementById('toast-title').innerText = '식각 공정 운전인자 조정';
+        document.getElementById('toast-input-area').innerHTML = `
+        <label>식각속도 :
+          <input type="text" id="etching-input" value="4852.36" />
+        </label>
+        <div style="font-size:12px; color:gray;">
+          {권장값 :5012.00 ≤ Etching rate &lt; 5028.00<br>
+          5563.00 &lt; Etching rate ≤ 5694.00}
+        </div>
+    `;
+        document.getElementById('custom-toast').style.display = 'block';
+    });
+
+    // 취소
+    document.getElementById('toast-cancel').addEventListener('click', closeToast);
+
+    // 적용
+    document.getElementById('toast-apply').addEventListener('click', applyCustomEdit);
+
+    function closeToast() {
+        document.getElementById('custom-toast').style.display = 'none';
+        currentEditTarget = null;
+    }
+
+    function applyCustomEdit() {
+        if (currentEditTarget === 'l-3') {
+            document.getElementById('chamber-l-3').className = 'chamber';
+            document.getElementById('signal3').innerHTML = `
+            <div class="light gray"></div>
+            <div class="light green"></div>
+        `;
+            const rateBox = document.getElementById('rate3');
+            rateBox.innerText = '4.98%';
+            rateBox.className = 'defect-box';
+        }
+
+        if (currentEditTarget === 'etch-1') {
+            document.getElementById('chamber-etch-1').className = 'chamber';
+            document.getElementById('signal1').innerHTML = `
+            <div class="light gray"></div>
+            <div class="light green"></div>
+        `;
+            const rateBox = document.getElementById('rate1');
+            rateBox.innerText = '4.07%';
+            rateBox.className = 'defect-box';
+        }
+
+        closeToast();
+        document.getElementById('toast-msg').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('toast-msg').style.display = 'none';
+        }, 1500);
+    }
+</script>
 {% endblock %}
