@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>반도체 공정 모니터링</title>
+
+    <!-- Material Dashboard CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/css/materialize.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 2rem;
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .dashboard-header {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        table.striped th {
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="blue darken-2">
+    <div class="nav-wrapper container">
+        <a href="#" class="brand-logo">반도체 공정 대시보드</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="dashboard-header">현재 공정</div>
+
+    <div class="card">
+        <div class="card-content">
+            <p><strong>현재 작업:</strong> <span id="current-job">로드 중...</span></p>
+            <p><strong>불량 여부:</strong> <span id="current-defect">로드 중...</span></p>
+        </div>
+    </div>
+
+    <div class="dashboard-header">경로별 불량률</div>
+
+    <div class="card">
+        <div class="card-content">
+            <table class="striped highlight responsive-table" id="defect-table">
+                <thead>
+                <tr>
+                    <th>Route</th>
+                    <th>Defect Rate</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 데이터 JS로 채움 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Materialize JS -->
+<script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/js/materialize.min.js"></script>
+
+<script>
+    fetch('/get_data')
+        .then(res => res.json())
+        .then(data => {
+            // 현재 공정
+            document.getElementById('current-job').innerText =
+                `${data.current_process.Route} | ${data.current_process.Datetime.split('T')[0]}`;
+            document.getElementById('current-defect').innerText = data.current_process.is_defect;
+
+            // 경로별 불량률
+            const tbody = document.querySelector("#defect-table tbody");
+            data.defect_by_route.forEach(row => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `<td>${row.Route}</td><td>${(row.Defect_Rate * 100).toFixed(2)}%</td>`;
+                tbody.appendChild(tr);
+            });
+        });
+</script>
+
+</body>
+
+</html>
+
