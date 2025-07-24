@@ -66,18 +66,25 @@
                         <thead class="thead-light">
                         <tr>
                             <th style="width: 10%;">Rank</th>
-                            <th style="width: 40%;">투입경로</th>
+                            <th style="width: 30%;">투입경로</th>
+                            <th style="width: 15%;">부하수준</th>
                             <th style="width: 25%;">불량률(%)</th>
-                            <th style="width: 25%;">작업지시</th>
+                            <th style="width: 20%;">작업지시</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for i, row in combo_defect_table.iterrows() %}
                             <tr>
-                                <td>{{ row['Rank'] }}</td>
-                                <td>{{ row['투입경로'] }}</td>
-                                <td>{{ '%.2f'|format(row['불량률(%)']) }}</td>
-                                <td>
+                                <td class="align-middle">{{ row['Rank'] }}</td>
+                                <td class="align-middle">{{ row['투입경로'] }}</td>
+                                <td class="text-center align-middle">
+                                    {% for char in row['부하상태'] %}
+                                        <span class="circle2 {% if char == '1' %}high-load{% else %}normal-load{% endif %}"></span>
+                                    {% endfor %}
+                                </td>
+                                <td class="align-middle">{{ '%.2f'|format(row['불량률(%)']) }}</td>
+
+                                <td class="align-middle">
                                     <button class="btn btn-outline-dark btn-sm"
                                             onclick="openConfirmModal('{{ row['조합'] }}', '{{ row['투입경로'] }}')">
                                         작업 지시
@@ -116,7 +123,7 @@
              aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    ✅ 작업 지시가 성공적으로 전달되었습니다.
+                    ✓ 작업 지시가 성공적으로 전달되었습니다.
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
                         aria-label="닫기"></button>
@@ -136,11 +143,11 @@
         selectedPath = path;
 
         const body = document.getElementById('confirmModalBody');
-        body.innerHTML = `<p>다음 투입 경로로 작업 지시를 내리시겠습니까?</p>
+        body.innerHTML = `<h6 style="font-weight: bold !important;">다음 투입 경로로 작업 지시를 내리시겠습니까?</h6>
 <div style="display: inline-grid; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 12px 0;">
-  <span style="margin:0.5rem; background-color: #e0e0e0; padding: 6px 12px; border-radius: 16px;">${path.slice(1, 6)}</span>
-  <span style="margin:0.5rem; background-color: #e0e0e0; padding: 6px 12px; border-radius: 16px;">${path.slice(7, 13)}</span>
-  <span style="margin:0.5rem; background-color: #e0e0e0; padding: 6px 12px; border-radius: 16px;">${path.slice(14, -1)}</span>
+  <span style="margin:0.3rem; background-color: #e0e0e0; padding: 6px 12px; border-radius: 5px;">${path.slice(1, 6)}</span>
+  <span style="margin:0.3rem; background-color: #e0e0e0; padding: 6px 12px; border-radius: 5px;">${path.slice(7, 13)}</span>
+  <span style="margin:0.3rem; background-color: #e0e0e0; padding: 6px 12px; border-radius: 5px;">${path.slice(14, -1)}</span>
 </div>`;
 
         const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
@@ -156,5 +163,12 @@
 
         // 실제 작업 지시를 서버로 보내려면 여기서 fetch/post 호출 가능
     }
+
+    document.querySelectorAll('.route-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            document.querySelectorAll('.route-chip').forEach(c => c.classList.remove('selected'));
+            chip.classList.add('selected');
+        });
+    });
 </script>
 {% endblock %}

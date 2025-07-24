@@ -1,5 +1,5 @@
 main {
-    max-width: 1200px;
+    max-width: 1250px;
     margin: 0 auto;
 }
 body {
@@ -177,4 +177,23 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: center !important; /* 세로 가운데 정렬 */
     text-align: center; /* 가운데 정렬 */
     min-height: 200px; /* 필요 시 높이 조정 */
+}
+.route-chip.selected {
+    background-color: #0056b3;
+    color: white;
+}
+.circle2 {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin: 0 0.5px;
+    border-radius: 50%;
+}
+
+.normal-load {
+    background-color: #28a745; /* 초록색 */
+}
+
+.high-load {
+    background-color: #dc3545; /* 빨간색 */
 }

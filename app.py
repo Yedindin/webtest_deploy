@@ -49,12 +49,22 @@ def dashboard():
         recent_month.groupby('Route').size().reset_index(name='count').sort_values('count', ascending=False)
     )
 
+    # 월별 생산량 집계
+    df['Month'] = df['Datetime'].dt.to_period('M').astype(str)
+    monthly_counts = df.groupby('Month').size().reset_index(name='Count')
+
+    # Chart.js용 데이터 구성
+    chart_data = {
+        'labels': monthly_counts['Month'].tolist(),
+        'counts': monthly_counts['Count'].tolist()
+    }
 
     return render_template(
         'dashboard.html',
         cards=cards,
         defectRateData=defectRateData,
         loadByRouteData=loadByRouteData,
+        monthly_chart=chart_data
     )
 
     # 관리 한계 조건
@@ -194,15 +204,19 @@ def schedule():
     combo_records = []
     for r1, r2, r3 in valid_combos:
         rates = []
+        loads = []
         for r in [r1, r2, r3]:
             row = route_group[route_group['Route5'] == r]
             if not row.empty:
                 rates.append(row['DefectRate'].values[0])
+                loads.append(row['WaferCount'].values[0])
         if len(rates) == 3:
             avg_defect = sum(rates) / 3
-            combo_records.append({
+            load_flags = ''.join(['1' if l > 226 else '0' for l in loads])
+        combo_records.append({
                 '투입경로': f"[{r1}, {r2}, {r3}]",
-                '불량률(%)': round(avg_defect, 2)
+                '불량률(%)': round(avg_defect, 2),
+                '부하상태': load_flags
             })
 
     combo_df = pd.DataFrame(combo_records).sort_values(by='불량률(%)').reset_index(drop=True)
