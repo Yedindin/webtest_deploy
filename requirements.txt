@@ -1,5 +1,6 @@
-Flask
-pandas
+flask
+gunicorn
 sqlalchemy
 psycopg2-binary
+pandas
 numpy
