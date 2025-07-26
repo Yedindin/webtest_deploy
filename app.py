@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request
 import pandas as pd
 from sqlalchemy import create_engine
@@ -6,8 +7,7 @@ import numpy as np
 
 app = Flask(__name__)
 
-# MariaDB 연결 정보 설정
-db_url = "mysql+pymysql://root:000413@localhost:3306/testdb"
+db_url = os.environ.get("DB_URL")
 engine = create_engine(db_url)
 
 def loadData():

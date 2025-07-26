@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: flask-webtest
+    env: python
+    plan: free
+    region: oregon
+    buildCommand: ""
+    startCommand: python app.py
+    envVars:
+      - key: DB_URL
+        value: postgresql://jenna:Tr09lpqxUaV8fjWxdiNzuX36yYbQaHxF@dpg-d22h85h5pdvs739086o0-a.oregon-postgres.render.com/b2_db
