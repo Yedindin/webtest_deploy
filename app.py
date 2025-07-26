@@ -7,7 +7,7 @@ import numpy as np
 
 app = Flask(__name__)
 
-db_url = os.environ.get("DB_URL")
+db_url = os.environ.get("DATABASE_URL")
 engine = create_engine(db_url)
 
 def loadData():
